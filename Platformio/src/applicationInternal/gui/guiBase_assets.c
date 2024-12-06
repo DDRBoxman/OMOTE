@@ -13,9 +13,7 @@ const LV_ATTRIBUTE_MEM_ALIGN LV_ATTRIBUTE_LARGE_CONST LV_ATTRIBUTE_IMG_GRADIENTL
 };
 
 const lv_img_dsc_t gradientLeft = {
-  .header.cf = LV_IMG_CF_ALPHA_8BIT,
-  .header.always_zero = 0,
-  .header.reserved = 0,
+  .header.cf = LV_COLOR_FORMAT_A8,
   .header.w = 30,
   .header.h = 1,
   .data_size = 30,
@@ -32,9 +30,7 @@ const LV_ATTRIBUTE_MEM_ALIGN LV_ATTRIBUTE_LARGE_CONST LV_ATTRIBUTE_IMG_GRADIENTR
 };
 
 const lv_img_dsc_t gradientRight = {
-  .header.cf = LV_IMG_CF_ALPHA_8BIT,
-  .header.always_zero = 0,
-  .header.reserved = 0,
+  .header.cf = LV_COLOR_FORMAT_A8,
   .header.w = 30,
   .header.h = 1,
   .data_size = 30,

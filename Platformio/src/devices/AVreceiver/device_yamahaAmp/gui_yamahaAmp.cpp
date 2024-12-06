@@ -6,7 +6,7 @@
 #include "devices/AVreceiver/device_yamahaAmp/gui_yamahaAmp.h"
 
 static void button_clicked_event_cb(lv_event_t* e) {
-  int user_data = (intptr_t)(e->user_data);
+  int user_data = (intptr_t) lv_event_get_user_data(e);
 
   if (user_data == 0) {
     executeCommand(YAMAHA_STANDARD);

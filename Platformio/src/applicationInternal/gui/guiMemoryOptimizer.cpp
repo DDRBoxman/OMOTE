@@ -143,7 +143,8 @@ void clear_panel(lv_obj_t* panel, lv_obj_t* img1, lv_obj_t* img2) {
 
 lv_obj_t* create_tabview() {
   // Setup a scrollable tabview for devices and settings ----------------------------------------------------
-  lv_obj_t* tabview = lv_tabview_create(lv_scr_act(), LV_DIR_TOP, 0); // Hide tab labels by setting their height to 0
+  lv_obj_t* tabview = lv_tabview_create(lv_scr_act()); 
+  lv_tabview_set_tab_bar_size(tabview, 0); // Hide tab labels by setting their height to 0
   #ifdef drawRedBorderAroundMainWidgets
   lv_obj_add_style(tabview, &style_red_border, LV_PART_MAIN);
   #endif
@@ -507,6 +508,7 @@ void fillPanelWithPageIndicator_strategyMax3(lv_obj_t* panel, lv_obj_t* img1, lv
   lv_img_set_src(img2, &gradientRight);
   lv_obj_align(img2, LV_ALIGN_BOTTOM_RIGHT, 0, 0);
   lv_obj_set_size(img2, panelHeight, panelHeight);
+  
   #ifdef drawRedBorderAroundMainWidgets
   lv_obj_add_style(img2, &style_red_border, LV_PART_MAIN);
   #endif
@@ -700,7 +702,7 @@ void gui_memoryOptimizer_doContentCreation(lv_obj_t** tabview, lv_obj_t** panel,
   lv_obj_add_event_cb(*tabview, tabview_tab_changed_event_cb, LV_EVENT_VALUE_CHANGED, NULL);
   lv_obj_add_event_cb(lv_tabview_get_content(*tabview), tabview_content_is_scrolling_event_cb, LV_EVENT_SCROLL, NULL);
   // Initialize scroll position of the page indicator
-  lv_event_send(lv_tabview_get_content(*tabview), LV_EVENT_SCROLL, NULL);
+  lv_obj_send_event(lv_tabview_get_content(*tabview), LV_EVENT_SCROLL, NULL);
 
   // gui_memoryOptimizer_doContentCreation() is called as last step every time the 3 tabs are recreated.
   // Save here the last_active_gui_list. If the used list changes in a future navigation, save the last_active_gui_list_index

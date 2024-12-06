@@ -31,11 +31,13 @@ std::map<char, uint16_t> key_commands_long_smarthome = {};
 // Smart Home Toggle Event handler
 static void smartHomeToggle_event_cb(lv_event_t* e){
   std::string payload;
-  if (lv_obj_has_state(lv_event_get_target(e), LV_STATE_CHECKED)) payload = "true";
+  if (lv_obj_has_state((lv_obj_t*) lv_event_get_target(e), LV_STATE_CHECKED)) payload = "true";
   else payload = "false";
   // Publish an MQTT message based on the event user data  
   #if (ENABLE_WIFI_AND_MQTT == 1)
-  int user_data = *((int*)(&(e->user_data)));
+  int user_data = (intptr_t) lv_event_get_user_data(e);
+  // todo : check if this is correct
+  //int user_data = *((int*)(&(e->user_data)));
   if(user_data == 1) executeCommand(SMARTHOME_MQTT_BULB1_SET, payload);
   if(user_data == 2) executeCommand(SMARTHOME_MQTT_BULB2_SET, payload);
   #endif
@@ -43,13 +45,15 @@ static void smartHomeToggle_event_cb(lv_event_t* e){
 
 // Smart Home Slider Event handler
 static void smartHomeSlider_event_cb(lv_event_t* e){
-  lv_obj_t* slider = lv_event_get_target(e);
+  lv_obj_t* slider = (lv_obj_t*) lv_event_get_target(e);
   char payload[8];
   sprintf(payload, "%.2f", float(lv_slider_get_value(slider)));
   std::string payload_str(payload);
   // Publish an MQTT message based on the event user data
   #if (ENABLE_WIFI_AND_MQTT == 1)
-  int user_data = *((int*)(&(e->user_data)));
+  int user_data = (intptr_t) lv_event_get_user_data(e);
+  // todo : check if this is correct
+  //int user_data = *((int*)(&(e->user_data)));
   if(user_data == 1) executeCommand(SMARTHOME_MQTT_BULB1_BRIGHTNESS_SET, payload_str);
   if(user_data == 2) executeCommand(SMARTHOME_MQTT_BULB2_BRIGHTNESS_SET, payload_str);
   #endif

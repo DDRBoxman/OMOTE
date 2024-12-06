@@ -13,11 +13,13 @@
 
 // Virtual Keypad Event handler
 static void virtualKeypad_event_cb(lv_event_t* e) {
-  lv_obj_t* target = lv_event_get_target(e);
-  lv_obj_t* cont = lv_event_get_current_target(e);
+  lv_obj_t* target = (lv_obj_t*) lv_event_get_target(e);
+  lv_obj_t* cont = (lv_obj_t*) lv_event_get_current_target(e);
   if (target == cont) return; // stop if container was clicked
   
-  int user_data = (intptr_t)(target->user_data);
+  int user_data = (intptr_t) lv_event_get_user_data(e);
+  // todo : check if this is correct
+  //int user_data = (intptr_t)(target->user_data);
   // send corrensponding number
   if (gui_memoryOptimizer_getActiveSceneName() == scene_name_TV) {
     uint16_t virtualKeyMapTVNumbers[10] = {SAMSUNG_NUM_1, SAMSUNG_NUM_2, SAMSUNG_NUM_3, SAMSUNG_NUM_4, SAMSUNG_NUM_5, SAMSUNG_NUM_6, SAMSUNG_NUM_7, SAMSUNG_NUM_8, SAMSUNG_NUM_9, SAMSUNG_NUM_0};

@@ -41,9 +41,9 @@ void guis_doTabCreationAfterSliding(int newTabID);
 
 // callback when pageIndicator prev or next was clicked
 void pageIndicator_navigate_event_cb(lv_event_t* e) {
-  lv_obj_t* target = lv_event_get_target(e);
+  lv_obj_t* target = (lv_obj_t*) lv_event_get_target(e);
   
-  int user_data = (intptr_t)(target->user_data);
+  int user_data = (intptr_t) lv_event_get_user_data(e);
   if (user_data == 0) {
     executeCommand(GUI_PREV);
   } else if (user_data == 1) {
@@ -59,7 +59,7 @@ void sceneLabel_or_pageIndicator_event_cb(lv_event_t* e) {
 
 // callback for swipe down event to navigate to the scene selection page
 void screen_gesture_event_cb(lv_event_t* e) {
-  lv_obj_t* screen = lv_event_get_current_target(e);
+  lv_obj_t* screen = (lv_obj_t*) lv_event_get_current_target(e);
   lv_dir_t dir = lv_indev_get_gesture_dir(lv_indev_get_act());
   if (dir == LV_DIR_BOTTOM) {
     omote_log_d("- Scene selection: swipe down received for navigating to scene selection page\r\n");
@@ -76,7 +76,7 @@ void tabview_content_is_scrolling_event_cb(lv_event_t* e){
   //           screenwidth    indicator    ??    2 small hidden buttons  ??
   int offset = SCR_WIDTH / 2  - 150 / 2    - 8 - 2*50 / 2                -4;
   // get the object to which the event is sent
-  lv_obj_t* tabviewContent = lv_event_get_target(e);
+  lv_obj_t* tabviewContent = (lv_obj_t*) lv_event_get_target(e);
   
   // Get the x coordinate of object and scroll panel accordingly
   int16_t tabviewX = lv_obj_get_scroll_x(tabviewContent);
@@ -116,7 +116,7 @@ void tabview_tab_changed_event_cb(lv_event_t* e) {
 
     // Wait until the animation ended, then call "guis_doTabCreationAfterSliding(newTabID);"
     // https://forum.lvgl.io/t/delete-a-tab-after-the-tabview-scroll-animation-is-complete/3155/4
-    lv_obj_t* myTabview = lv_event_get_target(e);
+    lv_obj_t* myTabview = (lv_obj_t*) lv_event_get_target(e);
     lv_obj_t* tabContainer = lv_tabview_get_content(myTabview);
     lv_anim_t* anim = lv_anim_get(tabContainer, NULL);
     if(anim) {
@@ -239,7 +239,8 @@ void init_gui_memoryUsage_bar() {
   lv_label_set_text(MemoryUsageLabel, "");
   lv_obj_align(MemoryUsageLabel, LV_ALIGN_TOP_LEFT, 0, labelsPositionTop);
   lv_obj_set_style_text_font(MemoryUsageLabel, &lv_font_montserrat_12, LV_PART_MAIN);
-  lv_label_set_recolor(MemoryUsageLabel, true);
+  //lv_label_set_recolor(MemoryUsageLabel, true);
+  // https://github.com/lvgl/lvgl/issues/5352
 }
 
 void init_gui_status_bar() {
@@ -360,7 +361,7 @@ void setActiveTab(uint32_t index, lv_anim_enable_t anim_en, bool send_tab_change
   }
 
   if (send_tab_changed_event) {
-    lv_event_send(tabview, LV_EVENT_VALUE_CHANGED, NULL);
+    lv_obj_send_event(tabview, LV_EVENT_VALUE_CHANGED, NULL);
   }
 }
 

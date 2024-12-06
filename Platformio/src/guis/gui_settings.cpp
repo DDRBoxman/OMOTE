@@ -16,7 +16,7 @@ lv_obj_t* objBattSettingsPercentage;
 
 // Slider Event handler
 static void bl_slider_event_cb(lv_event_t* e){
-  lv_obj_t* slider = lv_event_get_target(e);
+  lv_obj_t* slider = (lv_obj_t*) lv_event_get_target(e);
   int32_t slider_value = lv_slider_get_value(slider);
   if (slider_value < 60)  {slider_value = 60;}
   if (slider_value > 255) {slider_value = 255;}
@@ -25,12 +25,12 @@ static void bl_slider_event_cb(lv_event_t* e){
 
 // Wakeup by IMU Switch Event handler
 static void WakeEnableSetting_event_cb(lv_event_t* e){
-  set_wakeupByIMUEnabled(lv_obj_has_state(lv_event_get_target(e), LV_STATE_CHECKED));
+  set_wakeupByIMUEnabled(lv_obj_has_state((lv_obj_t*) lv_event_get_target(e), LV_STATE_CHECKED));
 }
 
 // timout event handler
 static void timout_event_cb(lv_event_t* e){
-  lv_obj_t* drop = lv_event_get_target(e);
+  lv_obj_t* drop = (lv_obj_t*) lv_event_get_target(e);
   uint16_t selected = lv_dropdown_get_selected(drop);
   switch (selected) {
     case 0: {set_sleepTimeout(  10000); break;}
@@ -49,7 +49,7 @@ static void timout_event_cb(lv_event_t* e){
 
 // show memory usage event handler
 static void showMemoryUsage_event_cb(lv_event_t* e) {
-  setShowMemoryUsage(lv_obj_has_state(lv_event_get_target(e), LV_STATE_CHECKED));
+  setShowMemoryUsage(lv_obj_has_state((lv_obj_t*) lv_event_get_target(e), LV_STATE_CHECKED));
 }
 
 void create_tab_content_settings(lv_obj_t* tab) {

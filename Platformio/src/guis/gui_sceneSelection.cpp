@@ -13,7 +13,7 @@ static bool doForceScene;
 //  executeCommand(activate_scene_command);
 //}
 void activate_scene_cb(lv_timer_t *timer) {
-  uint16_t scene_command_including_force = (uintptr_t)(timer->user_data);
+  uint16_t scene_command_including_force = (uintptr_t)lv_timer_get_user_data(timer);
   // get the force flag from the highest bit
   uint16_t activate_scene_command = scene_command_including_force & 0x7FFF;
   bool doForceScene = (scene_command_including_force & 0x8000) == 0x8000;
@@ -28,8 +28,7 @@ static int lastShortClickedReceived;
 static unsigned long int lastShortClickedReceivedTime;
 
 static void sceneSelection_event_cb(lv_event_t* e) {
-
-  int user_data = (intptr_t)(e->user_data);
+  int user_data = (intptr_t) lv_event_get_user_data(e);
 
   // we will receive the following events in that order:
   // LV_EVENT_PRESSED
